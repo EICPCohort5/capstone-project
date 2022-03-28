@@ -2,6 +2,8 @@
 var mocha = require('mocha');
 var describe = mocha.describe;
 var it = mocha.it;
+let before = mocha.before;
+let after = mocha.after;
 //Chai
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -27,7 +29,7 @@ describe('Add Customers Page - UT', function(){
     after(async function() {
         await browser.close();
     })
-    
+
     /*
     TEST TYPE: Unit Test Front End
     DEVELOPER: Maria Ringes
@@ -52,6 +54,4 @@ describe('Add Customers Page - UT', function(){
             const successAlert =  await page.$eval('#app > div.alert.alert-success', ele => ele.textContent);
             expect(successAlert).to.include('Customer has been created!');
         }).timeout(30000);
-
->>>>>>> fcd14c819101fc10c96d31b4e574cad49bae16ca
 })
