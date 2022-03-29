@@ -56,6 +56,7 @@ describe('Add Customers Page - IT', function(){
         addPage = await browser.newPage();
         await addPage.goto('http://localhost:8080/addCustomer');
         await addPage.type('#firstName', 'Maria');
+        await addPage.type('#middleName', 'Alexis');
         await addPage.type('#lastName', 'Ringes');
         await addPage.type('#phone', '2034917089');
         await addPage.type('#email', 'maria_ringes@tjx.com');

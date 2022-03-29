@@ -19,7 +19,8 @@ export default defineComponent({
   methods: {
     async getCustomer () {
       try {
-        const response = await fetch(process.url.API_URL + 'customers/' + `/${this.customerId}`, {
+        //const response = await fetch(process.url.API_URL + 'customers/' + `/${this.customerId}`, {
+        const response = await fetch(`http://localhost:3000/api/customers/${this.customerId}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
