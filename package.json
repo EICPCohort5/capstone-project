@@ -6,8 +6,11 @@
     "start": "node ./bin/www && vue-cli-service serve",
     "watch": "nodemon ./bin/www",
     "serve": "vue-cli-service serve",
+<<<<<<< HEAD
     "test": "mocha test/ --recursive -timeout 30000",
     "test-it": "mocha test ",
+=======
+>>>>>>> fabdcca69b86a942888fd5732c701e488a13df73
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -19,6 +22,7 @@
     "core-js": "^3.8.3",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-validator": "^6.14.0",
     "http-errors": "~1.6.3",
     "mocha-cli": "^1.0.1",
     "morgan": "~1.9.1",

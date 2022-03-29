@@ -1,7 +1,9 @@
 //use sequelize to access mysql database
 const { Sequelize } = require('sequelize');
-// use credentials found in the config
-const config = require('./db-config');
+
+
+
+/* const connString = process.env.MYSQLCONNSTR_officialstonecapDatabase;
 
 // protocol://user:password@server:port/databaseName
 // const connection = new Sequelize('mysql://root:root1234@localhost:3306/demos');
@@ -11,6 +13,15 @@ const connection = new Sequelize(
   {
     define:{ timestamps: false }
   }
-);
+); */
+
+const connection = new Sequelize(process.env.DATABASE_NAME, process.env.USER_NAME, process.env.PASSWORD, {
+  host: process.env.HOST,
+  dialect: 'mysql',
+  define : {
+    timestamps : false
+  }
+})
+
 
 module.exports = connection;
