@@ -6,8 +6,8 @@
     "start": "node ./bin/www && vue-cli-service serve",
     "watch": "nodemon ./bin/www",
     "serve": "vue-cli-service serve",
-    "test": "mocha test/ --recursive --timeout 30000",
-    "test-it": "mocha test",
+    "test": "mocha test/ --recursive -timeout 30000",
+    "test-it": "mocha test ",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
