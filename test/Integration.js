@@ -49,12 +49,14 @@ describe('Add Customers Page - IT', function(){
 
         //Get customer count
         managePageBefore = await browser.newPage();
-        await managePageBefore.goto('http://localhost:8080/manageCustomers')
+        await managePageBefore.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await managePageBefore.waitForSelector('#app > table > tbody > tr');
         customerCount = await managePageBefore.$eval('#app > table > tbody', ele => ele.rows.length);
 
         //Add customer
         addPage = await browser.newPage();
-        await addPage.goto('http://localhost:8080/addCustomer');
+        await addPage.goto('https://officialstonecap.azurewebsites.net/addCustomer');
+        await addPage.waitForSelector('#app > #app');
         await addPage.type('#firstName', 'Maria');
         await addPage.type('#middleName', 'Alexis');
         await addPage.type('#lastName', 'Ringes');
@@ -66,11 +68,12 @@ describe('Add Customers Page - IT', function(){
         await addPage.select('#inlineFormCustomSelect', 'United States');
         await addPage.type('#zip', '01752');
         // await addPage.waitForTimeout(3000);
-        await addPage.click('#app > form > div.col-auto.g-10.d-flex.justify-content-center > input');
+        await addPage.click('form > div.col-auto.g-10.d-flex.justify-content-center > input');
         
         //Get customer count after
         managePageAfter = await browser.newPage();
-        await managePageAfter.goto('http://localhost:8080/manageCustomers')
+        await managePageAfter.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await managePageAfter.waitForSelector('#app > table > tbody > tr');
         let newCustomerCount = await managePageAfter.$eval('#app > table > tbody', ele => ele.rows.length);
         expect(newCustomerCount).to.equal(customerCount+1);
     }).timeout(10000);
@@ -86,7 +89,8 @@ describe('Add Customers Page - IT', function(){
     it("IT: manageCustomers page displays the last added customer", async function(){
         //Add customer
         addPage = await browser.newPage();
-        await addPage.goto('http://localhost:8080/addCustomer');
+        await addPage.goto('https://officialstonecap.azurewebsites.net/addCustomer');
+        await addPage.waitForSelector('#app > #app');
         await addPage.type('#firstName', 'Maria');
         await addPage.type('#lastName', 'Ringes');
         await addPage.type('#phone', '2034917089');
@@ -96,13 +100,15 @@ describe('Add Customers Page - IT', function(){
         await addPage.type('#region', 'MA');
         await addPage.select('#inlineFormCustomSelect', 'United States');
         await addPage.type('#zip', '01752');
-        await addPage.click('#app > form > div.col-auto.g-10.d-flex.justify-content-center > input');
+        await addPage.click('form > div.col-auto.g-10.d-flex.justify-content-center > input');
         
         //Get the first and last name of last customer displayed in manageCustomers
         managePage = await browser.newPage();
-        await managePage.goto('http://localhost:8080/manageCustomers')
-        let lastCustomerName = await managePage.$eval('#app > table > tbody > tr:last-child > th', ele => ele.textContent);
-        expect(lastCustomerName).to.equal('Maria Ringes');
+        await managePage.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await managePage.waitForSelector('#app > table > tbody > tr');
+        let lastCustomerName = await managePage.$eval("#app > table > tbody > tr:nth-child(53) > th", ele=>ele.textContent);
+        console.log(lastCustomerName.innerHTML);
+        expect(lastCustomerName.innerHTML).to.equal('Maria Ringes');
     }).timeout(10000);
 })
 
@@ -130,11 +136,12 @@ describe('Manage Customers Page - IT', function(){
         //Access first customer in the front end manageCustomer table
         page = await browser.newPage();
         pagetwo = await browser.newPage();
-        await page.goto('http://localhost:8080/manageCustomers');
+        await page.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await page.waitForSelector('#app > table > tbody > tr');
         const firstName =  await page.$eval('#app > table > tbody > tr:nth-child(1) > th > a', ele => ele.textContent);
 
         //Access first name of the first customer on API
-        await pagetwo.goto('http://localhost:3000/api/customers/1');
+        await pagetwo.goto('https://officialstonecap.azurewebsites.net/api/customers/1');
         const APIJson = await pagetwo.$eval('body > pre', ele => ele.textContent);
         const cleanAPIJson = JSON.parse(APIJson);
 
@@ -152,11 +159,12 @@ describe('Manage Customers Page - IT', function(){
         //Access first customer in the front end manageCustomer table
         page = await browser.newPage();
         pagetwo = await browser.newPage();
-        await page.goto('http://localhost:8080/manageCustomers');
+        await page.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await page.waitForSelector('#app > table > tbody > tr');
         const lastName =  await page.$eval('#app > table > tbody > tr:nth-child(1) > th > a', ele => ele.textContent);
 
         //Access first name of the first customer on API
-        await pagetwo.goto('http://localhost:3000/api/customers/1');
+        await pagetwo.goto('https://officialstonecap.azurewebsites.net/api/customers/1');
         const APIJson = await pagetwo.$eval('body > pre', ele => ele.textContent);
         const cleanAPIJson = JSON.parse(APIJson);
 
