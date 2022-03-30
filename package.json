@@ -4,15 +4,13 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www && vue-cli-service serve",
+    "dev": "vue-cli-service build && node ./bin/www",
     "watch": "nodemon ./bin/www",
     "serve": "vue-cli-service serve",
-<<<<<<< HEAD
-    "test": "mocha test/ --recursive -timeout 30000",
-    "test-it": "mocha test ",
-=======
->>>>>>> fabdcca69b86a942888fd5732c701e488a13df73
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test-it": "mocha --timeout=30000",
+    "test-all": "mocha --recursive --timeout=30000"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.4",
