@@ -208,6 +208,95 @@ describe('Add Customers Page - IT', function(){
     // })
 })
 
+describe('Edit Customers Page - IT', function(){
+    let browser;
+    before(async function(){browser = await puppeteer.launch(
+        {
+            headless: false, 
+            defaultViewport: null,
+            // slowMo: 150,
+        });
+    })
+    after(async function() {await browser.close();})
+        
+    it("IT: Edit Customer shows success alert", async function(){
+        page = await browser.newPage();
+        //Login to Authenticate
+        await page.goto('https://officialstonecap.azurewebsites.net/login');
+        await page.type('#username', 'cohort5');
+        await page.type('#exampleInputPassword1', 'test');
+        await page.click('#app > div > div > div > div > div > form > button');
+        await page.waitForNavigation();
+        //End Login Authentication
+        await page.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await page.waitForSelector('#app > div > div > table > tbody > tr > th');
+        await page.click('#app > div > div > table > tbody > tr:nth-child(2) > th > a'); //click on the customer to get to detail page
+        await page.waitForSelector('#editCustomerButton > a');
+        await page.click('#editCustomerButton > a');
+        await page.waitForSelector('#lastName', {visible: true});
+        await page.waitForFunction('document.getElementById("lastName").value != ""');
+        await page.type('#lastName', 's'); //typing the change
+        await page.click('#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input'); //submission to edited customer
+        await page.waitForSelector('#app > div > div > div.alert.alert-success');
+        const successAlert =  await page.$eval('#app > div > div > div.alert.alert-success', ele => ele.textContent);
+        expect(successAlert).to.include('Success! Customer has been updated!');
+    })
+    it("IT: Edit customer shows updated value in customer detail", async function(){
+        page = await browser.newPage();
+        //Login to Authenticate
+        await page.goto('https://officialstonecap.azurewebsites.net/login');
+        await page.type('#username', 'cohort5');
+        await page.type('#exampleInputPassword1', 'test');
+        await page.click('#app > div > div > div > div > div > form > button');
+        await page.waitForNavigation();
+        //End Login Authentication
+        await page.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await page.waitForSelector('#app > div > div > table > tbody > tr > th');
+        let customerName = await page.$eval('#app > div > div > table > tbody > tr:nth-child(2) > th', ele => ele.textContent);
+        console.log(customerName);
+        await page.click('#app > div > div > table > tbody > tr:nth-child(2) > th > a'); //click on the customer to get to detail page
+        await page.waitForSelector('#editCustomerButton > a');
+        await page.click('#editCustomerButton > a');
+        await page.waitForSelector('#lastName', {visible: true});
+        await page.waitForFunction('document.getElementById("lastName").value != ""');
+        await page.type('#lastName', 's'); //typing the change
+        await page.click('#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input'); //submission to edited customer
+        await page.click('#backButton');
+        await page.waitForSelector('#lastName', {visible: true});
+        await page.waitForFunction('document.getElementById("lastName").value != ""');
+        let firstName = await page.$eval('#firstName', ele=>ele.value);
+        let lastName = await page.$eval('#lastName', ele=>ele.value);
+        let fullName = `${firstName} ${lastName}`;
+        let expectedCustomerName = `${customerName}s`;
+        expect(expectedCustomerName).to.equal(fullName);
+    }) 
+    it("IT: Edit customer shows updated value in manage customer", async function(){
+        page = await browser.newPage();
+        //Login to Authenticate
+        await page.goto('https://officialstonecap.azurewebsites.net/login');
+        await page.type('#username', 'cohort5');
+        await page.type('#exampleInputPassword1', 'test');
+        await page.click('#app > div > div > div > div > div > form > button');
+        await page.waitForNavigation();
+        //End Login Authentication
+        await page.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await page.waitForSelector('#app > div > div > table > tbody > tr > th');
+        let customerName = await page.$eval('#app > div > div > table > tbody > tr:nth-child(2) > th', ele => ele.textContent);
+        await page.click('#app > div > div > table > tbody > tr:nth-child(2) > th > a'); //click on the customer to get to detail page
+        await page.waitForSelector('#editCustomerButton > a');
+        await page.click('#editCustomerButton > a');
+        await page.waitForSelector('#lastName', {visible: true});
+        await page.waitForFunction('document.getElementById("lastName").value != ""');
+        await page.type('#lastName', 's'); //typing the change
+        await page.click('#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input'); //submission to edited customer
+        await page.waitForSelector('#app > div > div > div.alert.alert-success');
+        await page.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await page.waitForSelector('#app > div > div > table > tbody > tr > th');
+        let updatedCustomerName = await page.$eval('#app > div > div > table > tbody > tr:nth-child(2) > th', ele => ele.textContent);
+        expect(customerName.length).to.equal(updatedCustomerName.length - 1);
+    }) 
+})
+
 describe('Create New Order - IT', function(){
     let browser;
     before(async function(){browser = await puppeteer.launch(
