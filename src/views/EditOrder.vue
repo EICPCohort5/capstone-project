@@ -8,7 +8,6 @@
       <div class="hello">
         <h1>{{ message }}</h1>
       </div>
-      {{order}}
       <form class="container mb-4">
         <div class="row mb-3">
           <div class="col">
@@ -16,7 +15,6 @@
               <label for="customerName">Customer Email</label>
               <v-select v-model="order.Customer" label="email" :options="customers"></v-select>
             </div>
-            {{customerID}}
           </div>
           <div class="col">
             <div class="form-group mb-3">
@@ -37,17 +35,16 @@
                 <label for="customerName">Order Status</label>
                 <v-select v-model="order.OrderStatusCode" label="orderStatusCode" :options="orderStatusCodes"></v-select>
               </div>
-              {{orderStatusCode}}
           </div>
           <div class="col">
             <div class="form-group mb-3">
               <label for="notes">Customer Notes</label>
-              <input v-model="order.customerNotes" type="notes" class="form-control" id="notes" />
+              <input v-model="order.orderNotes" type="notes" class="form-control" id="notes" />
             </div>
           </div>
         </div>
       </form>
-      <form class="row g-10 d-flex justify-content-center">
+      <form class="row g-10 d-flex justify-content-center" v-on:submit.prevent="onSubmit" >
         <div class="col-auto">
           <router-link :to="{ name: 'DetailOrder', params: { id: orderId, firstName: order.Customer.firstName, lastName: order.Customer.lastName} }">
             <button class="btn btn-primary" type="submit" id="backButton">
@@ -56,10 +53,9 @@
           </router-link>
         </div>
         <div class="col-auto">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button v-on:click="submitOrderUpdate()" class="btn btn-primary">Submit</button>
         </div>
       </form>
-
       <table summary="Products table" class="table table-hover container mt-5">
         <thead>
           <tr>
@@ -80,6 +76,20 @@
           </tr>
         </tbody>
       </table>
+      <table summary="Total table" class="table container mt-1">
+    <thead>
+      <tr>
+        <th scope="col">Total Quantity</th>
+        <th scope="col">Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{totalQuanityofItems}}</td>
+        <td>${{totalPriceOfOrder.toFixed(2)}}</td>
+      </tr>
+    </tbody>
+  </table>
       <div class="col-auto">
         <ProductS @productsToAdd="updateProducts" :tempProductsToAdd="productsToAdd"/>
       </div>

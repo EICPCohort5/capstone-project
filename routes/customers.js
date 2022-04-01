@@ -60,7 +60,7 @@ body('middleName', 'Middle name must be alphabetical').isAlpha().optional({nulla
 body('lastName', 'Last name must be alphabetical').isAlpha(),
 body('country','Country must be alphabetical').isAlpha('en-US', {ignore: " "}),
 body('address', 'Address must be alphanumeric').isAlphanumeric('en-US', {ignore: " #-.,"}),
-body('city', 'City must be alphanumeric').isAlphanumeric(),
+body('city', 'City must be alphanumeric').isAlphanumeric('en-US', {ignore: " ."}),
 body('region', 'Region must be alphanumeric').isAlphanumeric(),
 body('email', 'Must be a valid email').isEmail().normalizeEmail(),
 oneOf([
@@ -101,7 +101,7 @@ body('middleName', 'Middle name must be alphabetical').isAlpha().optional({nulla
 body('lastName', 'Last name must be alphabetical').isAlpha(),
 body('country','Country must be alphabetical').isAlpha('en-US', {ignore: " "}),
 body('address', 'Address must be alphanumeric').isAlphanumeric('en-US', {ignore: " #-.,"}),
-body('city', 'City must be alphanumeric').isAlphanumeric(),
+body('city', 'City must be alphanumeric').isAlphanumeric('en-US', {ignore: " ."}),
 body('region', 'Region must be alphanumeric').isAlphanumeric(),
 body('email', 'Must be a valid email').isEmail().normalizeEmail(),
 oneOf([
