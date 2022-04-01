@@ -8,9 +8,6 @@ const bcrypt = require('bcryptjs');
 const { DataTypes } = require('sequelize');
 const connection = require('./orm/db-connection');
 
-// Commented old code to test solution - Remove this if solution works on cloud
-// var indexRouter = require('./routes/index');
-
 const User = connection.define('User', {
     loginId: {
         type: DataTypes.INTEGER,
@@ -44,7 +41,6 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
 });
-//app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/customers', customersRouter);
 app.use('/api/products', productsRouter);
@@ -52,8 +48,6 @@ app.use('/api/orders', ordersRouter);
 app.use(history({
     verbose: true
 }));
-// Commented our code to test solution - Remove this if solution works on cloud
-// app.use('/', indexRouter);
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.get('/', function (req,res) {
