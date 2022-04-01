@@ -62,7 +62,6 @@ router.post('/', async(req,res)=>{
       try{
         let model = await Order.create(protoOrder);
         model.setDataValue('Products', protoOrder.Products);
-        //let orderTotal = 0.00;
         if (protoOrder.Products) {
           protoOrder.Products.forEach(async(product) => {
             let protoOrderProduct = {
@@ -72,9 +71,7 @@ router.post('/', async(req,res)=>{
               productId: product.productId
             };
             await OrderProduct.create(protoOrderProduct);
-            //orderTotal = (orderTotal + (protoOrderProduct.quantity * protoOrderProduct.priceEach));
           });
-          //model.setDataValue('totalOrderPrice', orderTotal);
         }
         res.status(201).json(model);
       } catch (error){
@@ -106,7 +103,6 @@ router.put('/:id', async(req, res) => {
               where: { orderId: protoOrder.orderId }
             });
             orderUpdate.setDataValue('Products', protoOrder.Products);
-            //let orderTotal = 0.00;
             if (protoOrder.Products) {
               protoOrder.Products.forEach(async(product) => {
                 let protoOrderProduct = {
@@ -116,9 +112,7 @@ router.put('/:id', async(req, res) => {
                   productId: product.productId
                 };
                 await OrderProduct.create(protoOrderProduct);
-                //orderTotal = (orderTotal + (protoOrderProduct.quantity * protoOrderProduct.priceEach));
               });
-              //model.setDataValue('totalOrderPrice', orderTotal);
             }
             res.status(200).json(orderUpdate);
           } else {
