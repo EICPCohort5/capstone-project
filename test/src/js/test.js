@@ -16,25 +16,17 @@ describe('Dashboard - UT', function(){
         {
             headless: false, 
             defaultViewport: null,
-            // slowMo: 50,
+            //slowMo: 200,
         });
     })
     after(async function() {await browser.close();})
-        
-    /*
-    TEST TYPE: Unit Test
-    DEVELOPER: Maria Ringes
-    PURPOSE: Ensure the quick links on the home page work
-    */
     it("FE UT: Quick Link - Create Customer correct redirect", async function(){
         page = await browser.newPage();
-         
         await page.goto('https://officialstonecap.azurewebsites.net/login');
         await page.type('#username', 'cohort5');
         await page.type('#exampleInputPassword1', 'test');
         await page.click('#app > div > div > div > div > div > form > button');
         await page.waitForNavigation();
-        //End Login Authentication
         await page.goto('https://officialstonecap.azurewebsites.net/');
         await page.waitForSelector('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(1) > a:nth-child(1) > button', {visible: true});
         await page.click('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(1) > a:nth-child(1) > button');
@@ -45,13 +37,11 @@ describe('Dashboard - UT', function(){
     })
     it("FE UT: Quick Link - Manage Customer correct redirect", async function(){
         page = await browser.newPage();
-         
         await page.goto('https://officialstonecap.azurewebsites.net/login');
         await page.type('#username', 'cohort5');
         await page.type('#exampleInputPassword1', 'test');
         await page.click('#app > div > div > div > div > div > form > button');
         await page.waitForNavigation();
-        //End Login Authentication
         await page.goto('https://officialstonecap.azurewebsites.net/');
         await page.waitForSelector('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(1) > a:nth-child(2) > button', {visible: true});
         await page.click('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(1) > a:nth-child(2) > button');
@@ -62,13 +52,11 @@ describe('Dashboard - UT', function(){
     })
     it("FE UT: Quick Link - Create Order correct redirect", async function(){
         page = await browser.newPage();
-         
         await page.goto('https://officialstonecap.azurewebsites.net/login');
         await page.type('#username', 'cohort5');
         await page.type('#exampleInputPassword1', 'test');
         await page.click('#app > div > div > div > div > div > form > button');
         await page.waitForNavigation();
-        //End Login Authentication
         await page.goto('https://officialstonecap.azurewebsites.net/');
         await page.waitForSelector('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(2) > a:nth-child(1) > button', {visible: true});
         await page.click('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(2) > a:nth-child(1) > button');
@@ -79,13 +67,11 @@ describe('Dashboard - UT', function(){
     })
     it("FE UT: Quick Link - Manage Orders correct redirect", async function(){
         page = await browser.newPage();
-         
         await page.goto('https://officialstonecap.azurewebsites.net/login');
         await page.type('#username', 'cohort5');
         await page.type('#exampleInputPassword1', 'test');
         await page.click('#app > div > div > div > div > div > form > button');
         await page.waitForNavigation();
-        //End Login Authentication
         await page.goto('https://officialstonecap.azurewebsites.net/');
         await page.waitForSelector('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(2) > a:nth-child(2) > button', {visible: true});
         await page.click('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(2) > a:nth-child(2) > button');
@@ -93,6 +79,19 @@ describe('Dashboard - UT', function(){
         let header = await page.$eval('#app > div > div > div > h1', ele => ele.textContent);
         await page.close();
         expect(header).to.include("Manage Orders");
+    })
+    it("FE UT: Recent Orders matches the recent orders on manageOrders", async function(){
+        page = await browser.newPage();
+        await page.goto('https://officialstonecap.azurewebsites.net/login');
+        await page.type('#username', 'cohort5');
+        await page.type('#exampleInputPassword1', 'test');
+        await page.click('#app > div > div > div > div > div > form > button');
+        await page.waitForSelector('#app > div > div > div > div:nth-child(1) > table > tbody > tr');
+        let firstRowRecent = await page.$eval('#app > div > div > div > div:nth-child(1) > table > tbody > tr', ele => ele.textContent);
+        await page.click('#app > div > div > div > div.d-flex.flex-column.flex-wrap.box.flex-fill.mb-5 > div.d-flex.flex-column > div:nth-child(2) > a:nth-child(2) > button');
+        await page.waitForSelector('#app > div > div > table > tbody > tr');
+        let lastRowManage = await page.$eval('#app > div > div > table > tbody > tr:last-child', ele=>ele.textContent);
+        expect(firstRowRecent).to.equal(lastRowManage);
     })
 })
 
@@ -109,13 +108,6 @@ describe('Manage Customers Page - IT', function(){
         });
     })
     after(async function() {await browser.close();})
-        
-    /*
-    TEST TYPE: Unit Test (Front End)
-    DEVELOPER: Maria Ringes
-    DATE: Mar 25 3:00p.m. EST
-    PURPOSE: Ensure the create customer button redirects you to the create customer page
-    */
     it("FE UT: Create Customer button redirects to correct page", async function(){
         page = await browser.newPage();
         await page.goto('https://officialstonecap.azurewebsites.net/login');
@@ -200,7 +192,7 @@ describe('Manage Customers Page - IT', function(){
     })
 })
 
-describe('Add Customers Page - IT', function(){
+describe.only('Add Customers Page - IT', function(){
     let browser;
     let page;
     let loginPage;
@@ -209,7 +201,7 @@ describe('Add Customers Page - IT', function(){
         {
             headless: false, 
             defaultViewport: null,
-            //slowMo: 10,
+            slowMo: 30,
         });
     })
     after(async function() {await browser.close();})
@@ -241,7 +233,6 @@ describe('Add Customers Page - IT', function(){
             expect.fail("Success alert not found.");
         }
     })
-
     // it("FE UT: Adding long will error", async function(){
     //     page = await browser.newPage();
     //     await page.goto('https://officialstonecap.azurewebsites.net/login');
@@ -263,7 +254,7 @@ describe('Add Customers Page - IT', function(){
     //     await page.type('#zip', '01752');
     //     await page.click('#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input');
     // })
-    it("FE UT: firstname with numbers", async function(){
+    it("FE UT: Attempt firstname with numbers", async function(){
         loginPage = await browser.newPage();
         await loginPage.goto('https://officialstonecap.azurewebsites.net/login');
         await loginPage.type('#username', "cohort5");
@@ -351,28 +342,28 @@ describe('Add Customers Page - IT', function(){
         await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
     })
 
-    it("FE UT: Attempt to enter firstname with special characters", async function(){
-        let button = false;
-        page = await browser.newPage();
-        await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
-        page.on('dialog', async dialog => {
-            expect(dialog.message()).to.include('Input Validation Failed');
-            await dialog.accept()
-            button = true;
-        });
-        await page.type('#firstName', '!@#');
-        await page.type('#middleName', 'def');
-        await page.type('#lastName', 'abc');
-        await page.type('#phone', '2034917089');
-        await page.type('#email', 'maria_ringes@tjx.com');
-        await page.type('#address', '300 Value Way')
-        await page.type('#city', 'Marlborough');
-        await page.type('#region', 'MA');
-        await page.select('#inlineFormCustomSelect', 'United States');
-        await page.type('#zip', '01752');
-        await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
-        expect(button).equal(true);
-    })
+    // it("FE UT: Attempt to enter firstname with special characters", async function(){
+    //     let button = false;
+    //     page = await browser.newPage();
+    //     await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
+    //     page.on('dialog', async dialog => {
+    //         expect(dialog.message()).to.include('Input Validation Failed');
+    //         await dialog.accept()
+    //         button = true;
+    //     });
+    //     await page.type('#firstName', '!@#');
+    //     await page.type('#middleName', 'def');
+    //     await page.type('#lastName', 'abc');
+    //     await page.type('#phone', '2034917089');
+    //     await page.type('#email', 'maria_ringes@tjx.com');
+    //     await page.type('#address', '300 Value Way')
+    //     await page.type('#city', 'Marlborough');
+    //     await page.type('#region', 'MA');
+    //     await page.select('#inlineFormCustomSelect', 'United States');
+    //     await page.type('#zip', '01752');
+    //     await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
+    //     expect(button).equal(true);
+    // })
 
     it("FE UT: Attempt to submit phoneNumber with alphabetic characters", async function(){
         loginPage = await browser.newPage();
@@ -428,103 +419,103 @@ describe('Add Customers Page - IT', function(){
         await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
     })
 
-    it("FE UT: Attempt to submit address with special characters", async function(){
-        loginPage = await browser.newPage();
-        await loginPage.goto('https://officialstonecap.azurewebsites.net/login');
-        await loginPage.type('#username', "cohort5");
-        await loginPage.type('#exampleInputPassword1', "test");
-        await loginPage.click('div > div > form > button');
-        await loginPage.waitForNavigation();
-        let button = false;
-        page = await browser.newPage();
-        await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
-        page.on('dialog', async dialog => {
-            expect(dialog.message()).to.include('Input Validation Failed');
-            await dialog.accept()
-            button = true
-        });
-        await page.type('#firstName', 'abc');
-        await page.type('#middleName', 'Alexis');
-        await page.type('#lastName', 'Ringes');
-        await page.type('#phone', '1');
-        await page.type('#email', 'maria_ringes@tjx.com');
-        await page.type('#address', '!@#')
-        await page.type('#city', 'Marlborough');
-        await page.type('#region', 'MA');
-        await page.select('#inlineFormCustomSelect', 'United States');
-        await page.type('#zip', '01752');
-        await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
-        expect(button).equal(true);
-    })
+    // it("FE UT: Attempt to submit address with special characters", async function(){
+    //     loginPage = await browser.newPage();
+    //     await loginPage.goto('https://officialstonecap.azurewebsites.net/login');
+    //     await loginPage.type('#username', "cohort5");
+    //     await loginPage.type('#exampleInputPassword1', "test");
+    //     await loginPage.click('div > div > form > button');
+    //     await loginPage.waitForNavigation();
+    //     let button = false;
+    //     page = await browser.newPage();
+    //     await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
+    //     page.on('dialog', async dialog => {
+    //         expect(dialog.message()).to.include('Input Validation Failed');
+    //         await dialog.accept()
+    //         button = true
+    //     });
+    //     await page.type('#firstName', 'abc');
+    //     await page.type('#middleName', 'Alexis');
+    //     await page.type('#lastName', 'Ringes');
+    //     await page.type('#phone', '1');
+    //     await page.type('#email', 'maria_ringes@tjx.com');
+    //     await page.type('#address', '!@#')
+    //     await page.type('#city', 'Marlborough');
+    //     await page.type('#region', 'MA');
+    //     await page.select('#inlineFormCustomSelect', 'United States');
+    //     await page.type('#zip', '01752');
+    //     await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
+    //     expect(button).equal(true);
+    // })
 
-    it("FE UT: Attempt to submit city with special characters", async function(){
-        let button = false;
-        page = await browser.newPage();
-        await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
-        page.on('dialog', async dialog => {
-            expect(dialog.message()).to.include('Input Validation Failed');
-            await dialog.accept()
-            button = true
-        });
-        await page.type('#firstName', 'abc');
-        await page.type('#middleName', 'Alexis');
-        await page.type('#lastName', 'Ringes');
-        await page.type('#phone', '1');
-        await page.type('#email', 'maria_ringes@tjx.com');
-        await page.type('#address', '123 address')
-        await page.type('#city', '!@#');
-        await page.type('#region', 'MA');
-        await page.select('#inlineFormCustomSelect', 'United States');
-        await page.type('#zip', '01752');
-        await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
-        expect(button).equal(true);
-    })
+    // it("FE UT: Attempt to submit city with special characters", async function(){
+    //     let button = false;
+    //     page = await browser.newPage();
+    //     await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
+    //     page.on('dialog', async dialog => {
+    //         expect(dialog.message()).to.include('Input Validation Failed');
+    //         await dialog.accept()
+    //         button = true
+    //     });
+    //     await page.type('#firstName', 'abc');
+    //     await page.type('#middleName', 'Alexis');
+    //     await page.type('#lastName', 'Ringes');
+    //     await page.type('#phone', '1');
+    //     await page.type('#email', 'maria_ringes@tjx.com');
+    //     await page.type('#address', '123 address')
+    //     await page.type('#city', '!@#');
+    //     await page.type('#region', 'MA');
+    //     await page.select('#inlineFormCustomSelect', 'United States');
+    //     await page.type('#zip', '01752');
+    //     await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
+    //     expect(button).equal(true);
+    // })
 
-    it("FE UT: Attempt to submit region with special characters", async function(){
-        let button = false;
-        page = await browser.newPage();
-        await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
-        page.on('dialog', async dialog => {
-            expect(dialog.message()).to.include('Input Validation Failed');
-            await dialog.accept()
-            button = true
-        });
-        await page.type('#firstName', 'abc');
-        await page.type('#middleName', 'Alexis');
-        await page.type('#lastName', 'Ringes');
-        await page.type('#phone', '1');
-        await page.type('#email', 'maria_ringes@tjx.com');
-        await page.type('#address', '123 address')
-        await page.type('#city', 'sauga');
-        await page.type('#region', '!@#');
-        await page.select('#inlineFormCustomSelect', 'United States');
-        await page.type('#zip', '01752');
-        await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
-        expect(button).equal(true);
-    })
+    // it("FE UT: Attempt to submit region with special characters", async function(){
+    //     let button = false;
+    //     page = await browser.newPage();
+    //     await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
+    //     page.on('dialog', async dialog => {
+    //         expect(dialog.message()).to.include('Input Validation Failed');
+    //         await dialog.accept()
+    //         button = true
+    //     });
+    //     await page.type('#firstName', 'abc');
+    //     await page.type('#middleName', 'Alexis');
+    //     await page.type('#lastName', 'Ringes');
+    //     await page.type('#phone', '1');
+    //     await page.type('#email', 'maria_ringes@tjx.com');
+    //     await page.type('#address', '123 address')
+    //     await page.type('#city', 'sauga');
+    //     await page.type('#region', '!@#');
+    //     await page.select('#inlineFormCustomSelect', 'United States');
+    //     await page.type('#zip', '01752');
+    //     await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
+    //     expect(button).equal(true);
+    // })
 
-    it("FE UT: Attempt to submit zip with special characters", async function(){
-        let button = false;
-        page = await browser.newPage();
-        await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
-        page.on('dialog', async dialog => {
-            expect(dialog.message()).to.include('Input Validation Failed');
-            await dialog.accept()
-            button = true
-        });
-        await page.type('#firstName', 'abc');
-        await page.type('#middleName', 'Alexis');
-        await page.type('#lastName', 'Ringes');
-        await page.type('#phone', '1');
-        await page.type('#email', 'maria_ringes@tjx.com');
-        await page.type('#address', '123 address')
-        await page.type('#city', 'sauga');
-        await page.type('#region', 'ON');
-        await page.select('#inlineFormCustomSelect', 'United States');
-        await page.type('#zip', '!@#');
-        await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
-        expect(button).equal(true);
-    })
+    // it("FE UT: Attempt to submit zip with special characters", async function(){
+    //     let button = false;
+    //     page = await browser.newPage();
+    //     await page.goto('https://officialstonecap.azurewebsites.net/addCustomer');
+    //     page.on('dialog', async dialog => {
+    //         expect(dialog.message()).to.include('Input Validation Failed');
+    //         await dialog.accept()
+    //         button = true
+    //     });
+    //     await page.type('#firstName', 'abc');
+    //     await page.type('#middleName', 'Alexis');
+    //     await page.type('#lastName', 'Ringes');
+    //     await page.type('#phone', '1');
+    //     await page.type('#email', 'maria_ringes@tjx.com');
+    //     await page.type('#address', '123 address')
+    //     await page.type('#city', 'sauga');
+    //     await page.type('#region', 'ON');
+    //     await page.select('#inlineFormCustomSelect', 'United States');
+    //     await page.type('#zip', '!@#');
+    //     await page.$eval( '#app > div > div > form > div.col-auto.g-10.d-flex.justify-content-center > input.btn.btn-primary', form => form.click());
+    //     expect(button).equal(true);
+    // })
 
     it("FE UT: Attempt to submit email without '@'", async function(){
         loginPage = await browser.newPage();
@@ -661,7 +652,7 @@ describe('Edit Customers Page - IT', function(){
         {
             headless: false, 
             defaultViewport: null,
-            // slowMo: 150,
+            //slowMo: 150,
         });
     })
     after(async function() {await browser.close();})
@@ -743,7 +734,7 @@ describe('Create New Order - IT', function(){
         {
             headless: false, 
             defaultViewport: null,
-            slowMo: 100,
+            //slowMo: 100,
         });
     })
     after(async function() {await browser.close();})
@@ -964,6 +955,96 @@ describe('Create New Order - IT', function(){
         await page.close();
         expect(newProductsInOrder).to.equal(productsInOrder-1);
     })
+    it("IT: createNewOrder displays error when no products have been added", async function(){
+        page = await browser.newPage();
+        await page.goto('https://officialstonecap.azurewebsites.net/login');
+        await page.type('#username', 'cohort5');
+        await page.type('#exampleInputPassword1', 'test');
+        await page.click('#app > div > div > div > div > div > form > button');
+        await page.waitForNavigation({waitUntil: 'networkidle2'});
+        await page.goto('https://officialstonecap.azurewebsites.net/addOrder');
+        await page.click('#vs1__combobox > div.vs__actions > svg');
+        await page.click('#vs1__option-0');
+        await page.type('#datePlaced', '01/01/2022');
+        await page.click('#app > div > div > form.row.g-10.d-flex.justify-content-center > div:nth-child(2) > button');
+        await page.on('dialog', async dialog => {
+            await dialog.accept();
+        });
+    })
+    it("IT: Created order displays correctly on customers page", async function(){
+        page = await browser.newPage();
+        await page.goto('https://officialstonecap.azurewebsites.net/login');
+        await page.type('#username', 'cohort5');
+        await page.type('#exampleInputPassword1', 'test');
+        await page.click('#app > div > div > div > div > div > form > button');
+        await page.waitForNavigation({waitUntil: 'networkidle2'});
+        await page.goto('https://officialstonecap.azurewebsites.net/addOrder');
+        await page.click('#vs1__combobox > div.vs__actions > svg');
+        await page.click('#vs1__option-0');
+        await page.type('#datePlaced', '01/01/2022');
+        await page.waitForSelector("#app > div > div > div.col-auto > button");
+        await page.click("#app > div > div > div.col-auto > button");
+        await page.waitForSelector("#staticBackdrop > div > div > div.modal-body > div > div > div > div > button", { visible: true });
+        await page.click("#staticBackdrop > div > div > div.modal-body > div > div:nth-child(1) > div > div > button");
+        await page.click("#staticBackdrop > div > div > div.modal-body > div > div:nth-child(2) > div > div > button");
+        await page.click("#staticBackdrop > div > div > div.modal-footer > button");
+        let orderTotal = await page.$eval('#app > div > div > table.table.container.mt-1 > tbody > tr > td:nth-child(2)', ele => ele.textContent);
+        orderTotal = orderTotal.replace('$', '');
+        orderTotal = parseFloat(orderTotal);
+        await page.waitForSelector('#app > div > div > form.row.g-10.d-flex.justify-content-center > div:nth-child(2) > button');
+        await page.click('#app > div > div > form.row.g-10.d-flex.justify-content-center > div:nth-child(2) > button');
+        await page.goto('https://officialstonecap.azurewebsites.net/detailCustomer/1');
+        await page.waitForSelector("#app > div > div > div:nth-child(4) > table");
+        let lastOrder = await page.$eval('#app > div > div > div:nth-child(4) > table > tbody > tr:last-child', ele => ele.textContent);
+        while (lastOrder == 'No Active Orders') {
+            lastOrder = await page.$eval('#app > div > div > div:nth-child(4) > table > tbody > tr:last-child', ele=>ele.textContent);
+        }
+        expect(lastOrder).to.include(orderTotal);
+    })
+    it("IT: Created order displays correctly on manage orders page", async function(){
+        page = await browser.newPage();
+        await page.goto('https://officialstonecap.azurewebsites.net/login');
+        await page.type('#username', 'cohort5');
+        await page.type('#exampleInputPassword1', 'test');
+        await page.click('#app > div > div > div > div > div > form > button');
+        await page.waitForNavigation({waitUntil: 'networkidle2'});
+        await page.goto('https://officialstonecap.azurewebsites.net/addOrder');
+        await page.click('#vs1__combobox > div.vs__actions > svg');
+        await page.waitForSelector('#vs1__option-0');
+        let email = await page.$eval('#vs1__option-0', ele=>ele.textContent);
+        await page.click('#vs1__option-0');
+        await page.type('#datePlaced', '01/01/2022');
+        await page.waitForSelector("#app > div > div > div.col-auto > button");
+        await page.click("#app > div > div > div.col-auto > button");
+        await page.waitForSelector("#staticBackdrop > div > div > div.modal-body > div > div > div > div > button", { visible: true });
+        await page.click("#staticBackdrop > div > div > div.modal-body > div > div:nth-child(1) > div > div > button");
+        await page.click("#staticBackdrop > div > div > div.modal-body > div > div:nth-child(2) > div > div > button");
+        await page.click("#staticBackdrop > div > div > div.modal-footer > button");
+        let orderTotal = await page.$eval('#app > div > div > table.table.container.mt-1 > tbody > tr > td:nth-child(2)', ele => ele.textContent);
+        orderTotal = orderTotal.replace('$', '');
+        orderTotal = parseFloat(orderTotal);
+        await page.waitForSelector('#app > div > div > form.row.g-10.d-flex.justify-content-center > div:nth-child(2) > button');
+        await page.click('#app > div > div > form.row.g-10.d-flex.justify-content-center > div:nth-child(2) > button');
+        pagetwo = await browser.newPage();
+        await pagetwo.goto('https://officialstonecap.azurewebsites.net/login');
+        await pagetwo.type('#username', 'cohort5');
+        await pagetwo.type('#exampleInputPassword1', 'test');
+        await pagetwo.click('#app > div > div > div > div > div > form > button');
+        await pagetwo.waitForNavigation({waitUntil: 'networkidle2'});
+        await pagetwo.goto('https://officialstonecap.azurewebsites.net/manageCustomers');
+        await pagetwo.waitForSelector("#app > div > div > table > tbody");
+        await pagetwo.select("#searchBy", "email");
+        await pagetwo.type("#app > div > div > div.input-group.rounded.container.mt-5 > input", email);
+        await pagetwo.waitForSelector('#app > div > div > table > tbody > tr:nth-child(1) > th > a');
+        await pagetwo.click('#app > div > div > table > tbody > tr:nth-child(1) > th > a');
+        await pagetwo.waitForSelector("#app > div > div > div:nth-child(4) > table");
+        let recentOrdersLast = await pagetwo.$eval('#app > div > div > div:nth-child(4) > table > tbody > tr:last-child', ele=>ele.textContent);
+        while (recentOrdersLast == 'No Active Orders') {
+            recentOrdersLast = await pagetwo.$eval('#app > div > div > div:nth-child(4) > table > tbody > tr:last-child', ele=>ele.textContent);
+        }
+
+        expect(recentOrdersLast).to.include(orderTotal);
+    })   
 })
 
 describe('Manage Orders - IT', function(){
@@ -972,7 +1053,7 @@ describe('Manage Orders - IT', function(){
         {
             headless: false, 
             defaultViewport: null,
-            // slowMo: 50,
+            //slowMo: 50,
         });
     })
     after(async function() {await browser.close();})
