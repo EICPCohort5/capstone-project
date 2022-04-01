@@ -1,5 +1,10 @@
 <template id="editCustomer">
+  <FooterBar />
+
+    <div class="bg">
   <NavBar />
+
+  <div class="bg-light border border-1 rounded container body-container">
   <div v-if="success" class="alert alert-success">
     <strong>Success!</strong> Customer has been updated!
   </div>
@@ -10,7 +15,6 @@
   <div class="hello">
     <h1>{{ message }}</h1>
   </div>
-  <FooterBar />
   <form class="container mb-4" v-on:submit.prevent="onSubmit">
     <div class="row mb-3">
       <div class="col">
@@ -90,46 +94,19 @@
       <label for="notes">Customer Notes</label>
       <input v-model="customer.customerNotes" type="text" class="form-control" id="notes" />
     </div>
-     <div class="col-auto g-10 d-flex justify-content-center" style="padding-top: 2%;">
+    <div class="col-auto g-10 d-flex justify-content-center" style="padding-top: 2%;">
+      <router-link style="padding-right:5%" :to="{ name: 'DetailCustomer', params: { id: customerId }}">
+        <button class="btn btn-primary mr-2" id="backButton">
+          Back to Detail Page
+        </button>
+      </router-link>
       <input type="submit" v-on:click="submit()" class="btn btn-primary" />
     </div>
   </form>
   <div v-if="loading" class="overlay spinner-border text-danger" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
-
-  <h3>Active Orders</h3>
-  <div>
-    <table summary="Active Orders table" class="table table-hover container">
-      <thead>
-        <tr>
-          <th scope="col">Order ID</th>
-          <th scope="col">Order Status Code</th>
-          <th scope="col">Date</th>
-          <th scope="col">Total Order Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">24535</th>
-          <td>In Progress</td>
-          <td>2/22/22</td>
-          <td>$420.69</td>
-        </tr>
-        <tr>
-          <th scope="row">24535</th>
-          <td>In Progress</td>
-          <td>2/22/22</td>
-          <td>$420.69</td>
-        </tr>
-        <tr>
-          <th scope="row">24535</th>
-          <td>In Progress</td>
-          <td>2/22/22</td>
-          <td>$420.69</td>
-        </tr>
-      </tbody>
-    </table>
+  </div>
   </div>
 </template>
 
@@ -151,4 +128,19 @@ li {
 a {
   color: #42b983;
 }
+label {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.btn {
+  border: 2px solid #79091c;
+  background-color: #9b0c23;
+  color: white;
+  cursor:pointer;
+}
+
+.btn:hover {
+  background-color: #a0273b;
+}
+
 </style>

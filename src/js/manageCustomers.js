@@ -8,6 +8,7 @@ export default defineComponent({
       message: "",
       customers: [],
       searchString: null,
+      searchBy: "firstName",
     };
   },
   computed: {
@@ -17,7 +18,7 @@ export default defineComponent({
           return this.searchString
             .toLowerCase()
             .split(" ")
-            .every(v => customer.firstName.toLowerCase().includes(v));
+            .every(v => customer[this.searchBy].toLowerCase().includes(v));
         });
       } else {
         return this.customers;
@@ -27,21 +28,27 @@ export default defineComponent({
   methods: {
     async getCustomers () {
       try {
-        const response = await fetch(process.url.API_URL + 'customers', {
+        const response = await fetch('/api/customers', {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+localStorage.getItem('user'),
           },
         })
         this.customers = await response.json()
       } catch(error) {
+        if(error.toString().includes('Unexpected token')) {
+          localStorage.removeItem('user')
+          alert('Please Relogin session has expired')
+          window.location.href = '/login';
+        }
         console.log(error)
       }
     },
   },
   mounted() {
-    this.message = "manageCustomers";
+    this.message = "Manage Customers";
     this.getCustomers()
   },
 });

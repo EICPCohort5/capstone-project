@@ -1,34 +1,25 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  el: "#manageOrders",
-  name: "manageOrders",
+  el: "#detailOrder",
+  name: "detailOrder",
   data() {
     return {
       message: "",
-      orders: [],
-      searchString: null,
-      searchBy: "orderId",
+      order: [],
+      orderId: this.$route.params.id,
+      success: false,
+      error: false,
+      loading: false,
     };
   },
-  computed: {
-    resultOrders() {
-      if (this.searchString) {
-        return this.orders.filter(order => {
-          return this.searchString
-            .toLowerCase()
-            .split(" ")
-            .every(v => order[this.searchBy].toString().toLowerCase().includes(v));
-        });
-      } else {
-        return this.orders;
-      }
-    }
+  created() {
+    this.getOrder()
   },
   methods: {
-    async getOrders () {
+    async getOrder () {
       try {
-        const response = await fetch('/api/orders', {
+        const response = await fetch('/api/orders/' + `${this.orderId}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
@@ -36,7 +27,7 @@ export default defineComponent({
             'Authorization': 'Bearer '+localStorage.getItem('user'),
           },
         })
-        this.orders = await response.json()
+        this.order = await response.json()
       } catch(error) {
         if(error.toString().includes('Unexpected token')) {
           localStorage.removeItem('user')
@@ -46,9 +37,9 @@ export default defineComponent({
         console.log(error)
       }
     },
-  },
+    
+},
   mounted() {
-    this.message = "Manage Orders";
-    this.getOrders()
+    this.message = "Order Details";
   },
 });

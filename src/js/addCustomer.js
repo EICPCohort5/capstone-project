@@ -25,7 +25,7 @@ export default defineComponent({
   },
   methods: {
     validateEmail() {
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+      if (/^\w+([\.-_]?\w+)*@\w+([\.-_]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
         return false;
       }
       else{
@@ -61,11 +61,29 @@ export default defineComponent({
       }
   },
 
+  nameLength() {
+    if (this.firstName.length > 20) {
+      alert("First Name too long")
+      return true;
+    }
+    else if (this.middleName.length > 20) {
+      alert("Middle Name too long")
+      return true;
+    }
+    else if (this.lastName.length > 40) {
+      alert("Last Name too long")
+      return true;
+    }
+    else{
+      return false
+    }
+},
+
     async submit () {
       if(this.firstName == "" ||
-      this.middleName == "" ||
       this.lastName == "" ||
       this.hasNumberName() ||
+      this.nameLength() ||
       this.phone == "" ||
       this.validatePhone() ||
       this.validateEmail() ||
@@ -78,12 +96,16 @@ export default defineComponent({
         return;
       }
       this.loading = true
+      if(this.middleName == "") {
+        this.middleName = null
+      }
       try {
-        const response = await fetch(process.url.API_URL + 'customers', {
+        const response = await fetch('/api/customers', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ localStorage.getItem('user'),
           },
           body: JSON.stringify({
             firstName: this.firstName,
@@ -114,13 +136,19 @@ export default defineComponent({
           this.customerNotes = ""
         }
       } catch(error) {
+        if(error.toString().includes('Unexpected token')) {
+          localStorage.removeItem('user')
+          alert('Please Relogin session has expired')
+          window.location.href = '/login';
+        } else {
+          this.error = true;
+        }
         console.log(error)
-        this.error = true;
       }
       this.loading = false;
     },
   },
   mounted() {
-    this.message = "Add Customer";
+    this.message = "Create new Customer";
   },
 });
